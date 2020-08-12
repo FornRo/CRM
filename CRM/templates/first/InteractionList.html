@@ -1,0 +1,43 @@
+{% extends 'first/base.html' %}
+
+{% block title %}
+Cообщения
+{% endblock title %}
+
+{% block content %}
+<h3>Interaction List</h3>
+<form>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Example select</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="project">
+            {% for projects in interaction %}
+            <option value="{{projects.project_id.pk}}">{{ projects.project_id }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto my-1">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+<hr />
+
+{% for element in page_obj %}
+<div class="starter-template">
+    <h2>
+        <a href="Interaction/{{ element.pk }}">
+            {{ element }}
+        </a>
+    </h2>
+    <p class="lead">
+        <b>Название проекта</b> = "{{ element.project_id }}" <br>
+        <b>Название компании</b> = "{{ element.company_id }}" <br>
+        <b>Канала обращения</b> = ""{{ element.communication_id }}" <br>
+        <b>Who</b> =  <br>
+        <b>Описание</b> = "{{ element.description_id }}" <br>
+        <b>Оценка</b> = "{{ element.appraisal }}" <br>
+
+    </p>
+    <br>
+</div>
+{% endfor %}
+{% endblock content %}

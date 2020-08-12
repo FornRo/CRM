@@ -1,0 +1,62 @@
+{% extends 'first/base.html' %}
+
+{% block title %}
+InteractionFilter
+{% endblock title %}
+
+{% block content %}
+<h3>Interaction Filter</h3>
+<form method="GET" action="{% url 'InteractionListView' %}">
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="project">Project</label>
+            <select id="project" class="form-control" name="project">
+                <option selected></option>
+                {% for project in projects %}
+                <option value="{{ project.pk }}">{{ project }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="record">Record</label>
+            <select id="record" class="form-control" name="record">
+                <option selected></option>
+                {% for record in records %}
+                <option value="{{ record.pk }}">{{ record }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="communication">Communication_id</label>
+            <select id="communication" class="form-control" name="communication">
+                <option selected></option>
+                {% for txt in communications %}
+                <option value="{{ txt.pk }}">{{ txt }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+<hr />
+
+{% for element in interactions %}
+<div class="starter-template">
+    <h2>
+        <a href="{{ element.pk }}/">
+            {{ element }}
+        </a>
+    </h2>
+    <p class="lead">
+        <b>Название проекта</b> = "{{ element.project_id }}" <br>
+        <b>Название компании</b> = "{{ element.company_id }}" <br>
+        <b>Канала обращения</b> = ""{{ element.communication_id }}" <br>
+        <b>Who</b> =  <br>
+        <b>Описание</b> = "{{ element.description_id }}" <br>
+        <b>Оценка</b> = "{{ element.appraisal }}" <br>
+
+    </p>
+    <br>
+</div>
+{% endfor %}
+{% endblock content %}

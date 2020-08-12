@@ -1,0 +1,20 @@
+{% extends 'first/base.html' %}
+
+{% block title %}
+Детально Запись
+{% endblock title %}
+
+{% block content %}
+<h3>Детально сообщения:</h3>
+<div class="starter-template">
+    <h5>{{ interaction }}</h5>
+    <p class="lead">
+        <b>Название проекта</b> = "{{ interaction.project_id }}" <br>
+        <b>Название компании</b> = "{{ interaction.company_id }}" <br>
+        <b>Канала обращения</b> = "{{ interaction.communication_id }}" <br>
+        <b>Who</b> =  <br>
+        <b>Описание</b> = "{{ interaction.description_id }}" <br>
+        <b>Оценка</b> = "{{ interaction.appraisal }}" <br>
+    </p>
+</div>
+{% endblock content %}

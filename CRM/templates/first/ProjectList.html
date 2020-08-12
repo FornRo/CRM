@@ -1,0 +1,41 @@
+{% extends 'first/base.html' %}
+
+{% block title %}
+    Проекты
+{% endblock title %}
+
+{% block content %}
+        <h3>Project List</h3>
+<form>
+<div>
+    <input type="radio" id="contactChoice1"
+     name="status" value="True">
+    <label for="contactChoice1">True</label>
+
+    <input type="radio" id="contactChoice2"
+     name="status" value="False">
+    <label for="contactChoice2">False</label>
+</div>
+<div class="col-auto my-1">
+        <button type="submit" class="btn btn-primary">Submit</button>
+</div>
+</form>
+
+    {% for project in projects %}
+        <div class="starter-template">
+            <h2>
+                <a href="Project/{{ element.pk }}">
+                {{ project }}
+                </a>
+            </h2>
+            <p class="lead">
+                <b>Описание</b> = "{{ project.description_id }}" <br>
+                <b>Сроки начала</b> = "{{ project.start_date }}" <br>
+                <b>Срокок ончания</b> = "{{ project.deadline }}" <br>
+                <b>Стоимость</b> = "{{ project.cost }}" <br>
+                <b>Status</b> = "{{ project.status }}" <br>
+            </p>
+            <br>
+        </div>
+    {% endfor %}
+{% endblock content %}

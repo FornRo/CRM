@@ -1,0 +1,18 @@
+{% extends 'first/base.html' %}
+
+{% block title %}
+Детально Запись
+{% endblock %}
+
+{% block content %}
+    <h3>Детально Запись</h3>
+    <div class="alert alert-warning mt-2">
+        <h3>Name =  "{{ record }}"</h3>
+        <p>Дата создание = "{{ record.crt_date }}"</p>
+        <p>Дата записи = "{{ record.date_record }}"</p>
+        <p>адрес = "{{ record.address.address }}"</p>
+        <p>телефон = "{{ record.address.phone_number }}; e-mail = "{{ record.address.e_mail }}"</p>
+        <p></p>
+        <p>описание = "{{ record.description }}"</p>
+    </div>
+{% endblock %}
