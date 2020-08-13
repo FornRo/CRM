@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 # Create your views here.
 from .models import Record, Project, Interaction, Communication
 from django.views.generic import View, DetailView, ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class Base(View): # Для вывода базового Base.html
     template_name = r'first\Base.html'
@@ -9,7 +10,8 @@ class Base(View): # Для вывода базового Base.html
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
 
-class RecordListView(ListView):
+class RecordListView(ListView): # LoginRequiredMixin
+    # login_url = '/accounts/login/'
     model = Record
     paginate_by = 5
     template_name = r'first\RecordList.html'
@@ -24,9 +26,35 @@ class RecordDetailView(DetailView):
     model = Record
     template_name = r'first\RecordDetal.html'
 
-    def get(self, request, pk, *args, **kwargs):
+    def get(self, pk, *args, **kwargs):
         content = {'record': self.model.objects.get(id=pk)}
-        return render(request, self.template_name, content)
+        return render(self.request, self.template_name, content)
+
+# ______________________________
+from .forms import RecordForm
+
+def PostRecordAdd(request):
+    if request.method == "POST":
+        form = RecordForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('post_detail', pk=form.pk)
+    else:
+        form = RecordForm()
+    return render(request, 'blog/post_edit.html', {'form': form})
+
+def PostRecordEdit(request):
+    if request.method == "POST":
+        form = RecordForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('post_detail', pk=form.pk)
+    else:
+        form = RecordForm()
+    return render(request, 'blog/post_edit.html', {'form': form})
+
+
+
 
 class ProjectListView(ListView):
     model = Project
@@ -82,3 +110,4 @@ class InteractionDetailView(DetailView): # Detail
     def get(self, request, pk, *args, **kwargs):
         content = {'interaction': self.model.objects.get(id=pk)}
         return render(request, self.template_name, content)
+

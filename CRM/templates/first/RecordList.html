@@ -7,44 +7,54 @@
 {% block content %}
     <h3>Главная станица</h3>
 <form>
-<div>
-    <input type="radio" id="contactChoice1"
-     name="ordering" value="name_company">
-    <label for="contactChoice1">названию прямая</label>
+    <div>
+        <input type="radio" id="contactChoice1"
+         name="ordering" value="name_company">
+        <label for="contactChoice1">названию прямая</label>
 
-    <input type="radio" id="contactChoice2"
-     name="ordering" value="crt_date">
-    <label for="contactChoice2">дате создания прямая</label>
+        <input type="radio" id="contactChoice2"
+         name="ordering" value="crt_date">
+        <label for="contactChoice2">дате создания прямая</label>
 
-</div>
-<div>
-    <input type="radio" id="contactChoice3"
-     name="ordering" value="-name_company">
-    <label for="contactChoice3">названию обратная</label>
-
-    <input type="radio" id="contactChoice4"
-     name="ordering" value="-crt_date">
-    <label for="contactChoice3">дате создания обратная</label>
-</div>
-<div class="col-auto my-1">
-        <button type="submit" class="btn btn-primary">Submit</button>
-</div>
-</form>
-    {% for element in page_obj %}
-    <div class="starter-template">
-        <h2>
-            <a href="{{ element.pk }}">
-            {{ element }}
-            </a>
-        </h2>
-        <p class="lead">
-            <b>Адрес</b> = "{{ element.address.address }}" <br>
-            <b>Телефон</b> = "{{ element.address.phone_number }}" <br>
-            <b>e-mail</b> = "{{ element.address.e_mail }}" <br>
-            <b>Описание</b> = "{{ element.description_id }}" <br>
-            <b>crt_date</b> = "{{ element.crt_date }}" <br>
-        </p>
-        <br>
     </div>
-    {% endfor %}
+    <div>
+        <input type="radio" id="contactChoice3"
+         name="ordering" value="-name_company">
+        <label for="contactChoice3">названию обратная</label>
+
+        <input type="radio" id="contactChoice4"
+         name="ordering" value="-crt_date">
+        <label for="contactChoice3">дате создания обратная</label>
+    </div>
+    <div class="col-auto my-1">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<div class="col-auto my-1">
+    {% if user.is_authenticated %}
+    <a class="btn btn-primary" href="{% url 'PostRecordAdd' %}">Add Record</a>
+    {% endif %}
+    {% if user.is_authenticated %}
+    <a class="btn btn-primary" href="{% url 'PostRecordEdit' %}">Add Record</a>
+    {% endif %}
+</div>
+
+{% for element in page_obj %}
+<div class="starter-template">
+    <h2>
+        <a href="{{ element.pk }}">
+            {{ element }}
+        </a>
+    </h2>
+    <p class="lead">
+        <b>Адрес</b> = "{{ element.address.address }}" <br>
+        <b>Телефон</b> = "{{ element.address.phone_number }}" <br>
+        <b>e-mail</b> = "{{ element.address.e_mail }}" <br>
+        <b>Описание</b> = "{{ element.description_id }}" <br>
+        <b>crt_date</b> = "{{ element.crt_date }}" <br>
+    </p>
+    <br>
+</div>
+{% endfor %}
 {% endblock content %}
