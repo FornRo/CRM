@@ -1,0 +1,21 @@
+{% extends 'first/base.html' %}
+
+{% block title %}
+New post
+{% endblock title %}
+
+{% block content %}
+<div class="starter-template">
+    <h3>New CompanyAddress</h3>
+    <form method="post"  class="form-control mr-sm-2">
+        {% csrf_token %}
+        {{ form.address }} <br>
+        {{ form.phone_number }} <br>
+        {{ form.e_mail }} <br>
+        <button type="submit" class="btn btn-primary btn-lg m-3">Save</button>
+    </form>
+</div>
+
+
+{% endblock content %}
+

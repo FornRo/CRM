@@ -1,0 +1,35 @@
+{% extends 'first/base.html' %}
+
+{% block title %}
+ RecordCreate
+{% endblock title %}
+
+{% block content %}
+<div class="starter-template">
+    <h3>RecordCreate</h3>
+    <form method="post"  class="form-control mr-sm-2">
+        {% csrf_token %}
+        {{ form.name_company}}<br>
+        {{ form.name_manager}}<br>
+        <label class="m-2" for="description_id">description_id</label>
+        {{ form.description_id}}
+        <button type="button" class="btn btn-warning">
+            <a href="" target="popup" onclick="window.open('{% url 'DescriptinCreate' %}','DescriptinCreate','width=600,height=400')" >
+                Create new Description
+            </a>
+        </button>
+        <br>
+        <label class="m-2" for="address_id">address_id</label>
+        {{ form.address}}
+        <button type="button" class=" btn btn-warning">
+            <a href="" target="popup" onclick="window.open('{% url 'CompanyAddressCreate' %}','CompanyAddressCreate','width=600,height=400')" >
+                Create new Address
+            </a>
+        </button> <br>
+        <button type="submit" class="btn btn-primary btn-lg m-3">Save</button>
+    </form>
+</div>
+
+
+{% endblock content %}
+

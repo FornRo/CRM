@@ -31,14 +31,7 @@
     </div>
 </form>
 
-<div class="col-auto my-1">
-    {% if user.is_authenticated %}
-    <a class="btn btn-primary" href="{% url 'PostRecordAdd' %}">Add Record</a>
-    {% endif %}
-    {% if user.is_authenticated %}
-    <a class="btn btn-primary" href="{% url 'PostRecordEdit' %}">Add Record</a>
-    {% endif %}
-</div>
+
 
 {% for element in page_obj %}
 <div class="starter-template">

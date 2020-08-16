@@ -1,0 +1,59 @@
+{% extends 'first/base.html' %}
+
+{% block title %}
+ InteractionCreate
+{% endblock title %}
+
+{% block content %}
+<div class="starter-template">
+    <h3>InteractionCreate</h3>
+    <form method="post"  class="form-control mr-sm-2">
+        {% csrf_token %}
+
+        <label class="m-2" for="project_id">project_id</label>
+        {{ form.project_id }}
+        <button type="button" class="btn btn-warning">
+            <a href="" target="popup" onclick="window.open('{% url 'DescriptinCreate' %}','DescriptinCreate','width=600,height=400')" >
+                Create new Description
+            </a>
+        </button> <br>
+
+        <label class="m-2" for="company_id">company_id</label>
+        {{ form.company_id }}
+        <button type="button" class="btn btn-warning">
+            <a href="" target="popup" onclick="window.open('{% url 'DescriptinCreate' %}','DescriptinCreate','width=600,height=400')" >
+                Create new Description
+            </a>
+        </button> <br>
+
+        <label class="m-2" for="communication_id">communication_id</label>
+        {{ form.communication_id }}
+        <button type="button" class="btn btn-warning">
+            <a href="" target="popup" onclick="window.open('{% url 'DescriptinCreate' %}','DescriptinCreate','width=600,height=400')" >
+                Create new Description
+            </a>
+        </button> <br>
+        {{ form.name_manager }}<br>
+
+        <label class="m-2" for="description_id">description_id</label>
+        {{ form.description_id }}
+        <button type="button" class="btn btn-warning">
+            <a href="" target="popup"
+               onclick="window.open('{% url 'DescriptinCreate' %}','DescriptinCreate','width=600,height=400')" >
+                Create new Description
+            </a>
+        </button> <br>
+            <input placeholder="Введите оценку: 1 &le; n &le; 10" class="form-control mt-3" type="number" name="appraisal" min="0" max="10" required="" id="id_appraisal">
+        <br>
+        <button type="submit" class="btn btn-primary btn-lg m-3">Save</button>
+    </form>
+<!--    <p class="lead">-->
+<!--        <b>Название проекта</b> = "" <br>-->
+<!--        <b>Название компании</b> = <br>-->
+<!--        <b>Канала обращения</b> =  <br>-->
+<!--        <b>Who</b> =  <br>-->
+<!--        <b>Описание</b> =  <br>-->
+<!--        <b>Оценка</b> =  <br>-->
+<!--    </p>-->
+</div>
+{% endblock content %}

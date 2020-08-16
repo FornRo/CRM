@@ -26,7 +26,7 @@ class Record(models.Model):
     description_id = models.OneToOneField(Descriptin, on_delete=models.CASCADE)
     crt_date = models.DateField('Дата создание', auto_now_add=True, editable=False)
     date_record = models.DateField('Дата изменения записи', auto_now=True, editable=False)
-    address = models.OneToOneField('CompanyAddress', on_delete=models.CASCADE)
+    address = models.OneToOneField(CompanyAddress, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Запись'
@@ -60,7 +60,7 @@ class Interaction(models.Model):
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
     company_id = models.ForeignKey(Record, on_delete=models.CASCADE)
     communication_id = models.ForeignKey(Communication, on_delete=models.DO_NOTHING)
-    # id Menedjers (id USER)
+    name_manager = models.CharField('Имя менеджера', max_length=255, null=True)
     description_id = models.OneToOneField(Descriptin, on_delete=models.CASCADE, blank=True)
     appraisal = models.PositiveSmallIntegerField('Оценка', default=0)  # оценки от 0 до 10
 

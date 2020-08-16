@@ -6,14 +6,14 @@ InteractionFilter
 
 {% block content %}
 <h3>Interaction Filter</h3>
-<form method="GET" action="{% url 'InteractionListView' %}">
+<form method="GET" action="{% url 'InteractionFilterView' %}">
     <div class="form-row">
         <div class="form-group col-md-4">
             <label for="project">Project</label>
             <select id="project" class="form-control" name="project">
                 <option selected></option>
                 {% for project in projects %}
-                <option value="{{ project.pk }}">{{ project }}</option>
+                <option value="{{ project.pk }}">{{ project.name_project }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -22,7 +22,7 @@ InteractionFilter
             <select id="record" class="form-control" name="record">
                 <option selected></option>
                 {% for record in records %}
-                <option value="{{ record.pk }}">{{ record }}</option>
+                <option value="{{ record.pk }}">{{ record.name_company }}</option>
                 {% endfor %}
             </select>
         </div>

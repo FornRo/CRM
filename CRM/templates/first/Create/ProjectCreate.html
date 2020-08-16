@@ -1,0 +1,29 @@
+{% extends 'first/base.html' %}
+
+{% block title %}
+ProjectCreate
+{% endblock title %}
+
+{% block content %}
+<div class="starter-template">
+    <h3>ProjectCreate</h3>
+    <form method="post"  class="form-control mr-sm-2">
+        {% csrf_token %}
+        {{ form.name_project }}<br>
+        <label class="m-2" for="description_id">description_id</label>
+        {{ form.description_id }}
+        <button type="button" class="btn btn-warning">
+            <a href="" target="popup" onclick="window.open('{% url 'DescriptinCreate' %}','DescriptinCreate','width=600,height=400')" >
+                Create new Description
+            </a>
+        </button>
+        <br>
+        {{ form.start_date }}<br>
+        {{ form.deadline }}<br>
+        {{ form.cost }}<br>
+        {{ form.status }}<br>
+        <button type="submit" class="btn btn-primary btn-lg m-3">Save</button>
+
+    </form>
+</div>
+{% endblock content %}

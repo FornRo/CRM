@@ -1,18 +1,22 @@
 from django.shortcuts import render, redirect
 # Create your views here.
-from .models import Record, Project, Interaction, Communication
+from . import models # Record, Project, Interaction, Communication
 from django.views.generic import View, DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-class Base(View): # Для вывода базового Base.html
+
+class Base(View):  # Для вывода базового Base.html
     template_name = r'first\Base.html'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         return render(request, self.template_name)
 
-class RecordListView(ListView): # LoginRequiredMixin
+# _____________________________________| List View |_____________________________________
+
+
+class RecordListView(ListView):
     # login_url = '/accounts/login/'
-    model = Record
+    model = models.Record
     paginate_by = 5
     template_name = r'first\RecordList.html'
     context_object_name = 'id'
@@ -22,70 +26,44 @@ class RecordListView(ListView): # LoginRequiredMixin
         ordering = self.request.GET.get('ordering')
         return ordering
 
-class RecordDetailView(DetailView):
-    model = Record
-    template_name = r'first\RecordDetal.html'
-
-    def get(self, pk, *args, **kwargs):
-        content = {'record': self.model.objects.get(id=pk)}
-        return render(self.request, self.template_name, content)
-
-# ______________________________
-from .forms import RecordForm
-
-def PostRecordAdd(request):
-    if request.method == "POST":
-        form = RecordForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('post_detail', pk=form.pk)
-    else:
-        form = RecordForm()
-    return render(request, 'blog/post_edit.html', {'form': form})
-
-def PostRecordEdit(request):
-    if request.method == "POST":
-        form = RecordForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('post_detail', pk=form.pk)
-    else:
-        form = RecordForm()
-    return render(request, 'blog/post_edit.html', {'form': form})
-
-
-
 
 class ProjectListView(ListView):
-    model = Project
+    model = models.Project
     paginate_by = 5
     template_name = r'first\ProjectList.html'
     queryset = model.objects.all()
     context_object_name = 'projects'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['count'] = self.queryset.count()
+        context['count_all'] = self.model.objects.count()
+        return context
+
     def get_queryset(self):
         filter_val = self.request.GET.get('status')
-        new_context = self.queryset
         if filter_val != '' and filter_val is not None:
-            new_context = self.model.objects.filter(status=filter_val,)
-        return new_context
+            self.queryset = self.queryset.filter(status=filter_val,)
+        return self.queryset
 
-class InteractionListView(ListView): # List
-    model = Interaction
+
+class InteractionFilterView(ListView):  # List
+    model = models.Interaction
     paginate_by = 5
     # template_name = r'first\InteractionList.html'
     template_name = r'first\InteractionFilter.html'
     queryset = model.objects.all()
     context_object_name = 'interactions'
 
-    def is_valid_context(self, filter_val):
+    @staticmethod
+    def is_valid_context(filter_val):
         return filter_val != '' and filter_val is not None
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['projects'] = Project.objects.distinct()
-        context['records'] = Record.objects.distinct()
-        context['communications'] = Communication.objects.distinct()
+        context['projects'] = models.Project.objects.distinct()
+        context['records'] = models.Record.objects.distinct()
+        context['communications'] = models.Communication.objects.distinct()
         return context
 
     def get_queryset(self):
@@ -95,19 +73,152 @@ class InteractionListView(ListView): # List
         new_context = self.queryset
 
         if self.is_valid_context(filter_project):
-            new_context = new_context.filter(project_id=filter_project,)
+            new_context = new_context.filter(project_id=filter_project, )
         if self.is_valid_context(filter_record):
-            new_context = new_context.filter(company_id=filter_record,)
+            new_context = new_context.filter(company_id=filter_record, )
         if self.is_valid_context(filter_communication):
-            new_context = new_context.filter(communication_id=filter_communication,)
+            new_context = new_context.filter(communication_id=filter_communication, )
 
         return new_context
+# _____________________________________| NEXT Detail View |_____________________________________
 
-class InteractionDetailView(DetailView): # Detail
-    model = Interaction
+
+class RecordDetailView(DetailView):
+    model = models.Record
+    template_name = r'first\RecordDetal.html'
+
+    def get(self, pk, *args, **kwargs):
+        content = {'record': self.model.objects.get(id=pk)}
+        return render(self.request, self.template_name, content)
+
+
+class InteractionDetailView(DetailView):  # Detail
+    model = models.Interaction
     template_name = r'first\InteractionDetai.html'
 
-    def get(self, request, pk, *args, **kwargs):
+    def get(self, pk, *args, **kwargs):
         content = {'interaction': self.model.objects.get(id=pk)}
-        return render(request, self.template_name, content)
+        return render(self.request, self.template_name, content)
+# _____________________________________| NEXT Forms |_____________________________________
 
+
+from .forms import CompanyAddressForm, DescriptinForm, RecordForm,\
+    ProjectForm, CommunicationForm, InteractionForm
+
+
+class CompanyAddressCreate(LoginRequiredMixin, View):
+    form_class = CompanyAddressForm
+    initial = {'key': 'value'}
+    template_name = r'first\Create\CompanyAddressCreate.html'
+
+    def get(self, request):
+        form = self.form_class(self.initial)
+        context = {
+            'form': form,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        error = ''
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('BaseView')
+        else:
+            error = 'Форма была Неверной'
+        context = {
+            'form': form,
+            'error': error
+        }
+        return render(request, self.template_name, context)
+
+
+class DescriptinCreate(LoginRequiredMixin, View):
+    form_class = DescriptinForm
+    initial = {'key': 'value'}
+    template_name = r'first\Create\DescriptinCreate.html'
+
+    def get(self, request):
+        form = self.form_class(self.initial)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('BaseView')
+
+        return render(request, self.template_name, {'form': form})
+
+
+class RecordCreate(LoginRequiredMixin, View):
+    form_class = RecordForm
+    initial = {'key': 'value'}
+    template_name = r'first\Create\RecordCreate.html'
+
+    def get(self, request):
+        form = self.form_class(self.initial)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('BaseView')
+
+        return render(request, self.template_name, {'form': form})
+
+
+class ProjectCreate(LoginRequiredMixin, View):
+    form_class = ProjectForm
+    initial = {'key': 'value'}
+    template_name = r'first\Create\ProjectCreate.html'
+
+    def get(self, request):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('BaseView')
+
+        return render(request, self.template_name, {'form': form})
+
+
+class CommunicationCreate(LoginRequiredMixin, View):
+    form_class = CommunicationForm
+    initial = {'key': 'value'}
+    template_name = r'first\Create\CommunicationCreate.html'
+
+    def get(self, request):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('BaseView')
+
+        return render(request, self.template_name, {'form': form})
+
+
+class InteractionCreate(LoginRequiredMixin, View):
+    form_class = InteractionForm
+    initial = {'key': 'value'}
+    template_name = r'first\Create\InteractionCreate.html'
+
+    def get(self, request):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('BaseView')
+
+        return render(request, self.template_name, {'form': form})
+# _____________________________________| END |_____________________________________
