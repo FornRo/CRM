@@ -164,7 +164,7 @@ class RecordCreate(LoginRequiredMixin, View):
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('BaseView')
+            return redirect('RecordListView')
 
         return render(request, self.template_name, {'form': form})
 

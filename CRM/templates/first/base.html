@@ -20,21 +20,27 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'RecordListView' %}">RecordView <span class="sr-only">(current)</span></a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'RecordCreate' %}">RecordCreate <span class="sr-only">(current)</span></a>
+                    <a class="nav-link  text-danger" href="{% url 'RecordCreate' %}">RecordCreate <span class="sr-only">(current)</span></a>
                 </li>
+                {% endif %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'ProjectListView' %}">ProjectList <span class="sr-only">(current)</span></a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'ProjectCreate' %}">ProjectCreate <span class="sr-only">(current)</span></a>
+                    <a class="nav-link  text-danger" href="{% url 'ProjectCreate' %}">ProjectCreate <span class="sr-only">(current)</span></a>
                 </li>
+                {% endif %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'InteractionFilterView' %}">InteractionFilterView <span class="sr-only">(current)</span></a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'InteractionCreate' %}">InteractionCreate <span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-danger" href="{% url 'InteractionCreate' %}">InteractionCreate <span class="sr-only">(current)</span></a>
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="http://127.0.0.1:8000/admin"> admin  </a>
                 </li>
